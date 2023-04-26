@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">UberVet</string>
+    <string name="name">Nome</string>
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="confirm">Confirmar</string>
+    <string name="new_user">Novo Usuário</string>
+    <string name="login">Login</string>
+    <string name="especializacao">Especialização</string>
+    <string name="endereco">Endereço</string>
+</resources>
