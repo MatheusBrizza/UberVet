@@ -35,9 +35,33 @@ public class VeterinarioController {
         return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
     }
 
+    @GetMapping("/{nome}")
+    public ResponseEntity<Veterinario> listarVeterinarioPorNome(@PathVariable("nome") String nome) {
+        Veterinario responseVeterinario = veterinarioService.listarVeterinarioPorNome(nome);
+        return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<Veterinario> listarVeterinarioPorEmail(@PathVariable("email") String email) {
+        Veterinario responseVeterinario = veterinarioService.listarVeterinarioPorEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarVeterinarioPorId(@PathVariable("id") Integer id) {
         veterinarioService.deletarVeterinarioPorId(id);
+        return ResponseEntity.status(HttpStatus.GONE).body(null);
+    }
+
+    @DeleteMapping("/{nome}")
+    public ResponseEntity<Void> deletarVeterinarioPorNome(@PathVariable("nome") String nome) {
+        veterinarioService.deletarVeterinarioPorNome(nome);
+        return ResponseEntity.status(HttpStatus.GONE).body(null);
+    }
+
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> deletarVeterinairoPorEmail(@PathVariable("email") String email) {
+        veterinarioService.deletarVeterinarioPorEmail(email);
         return ResponseEntity.status(HttpStatus.GONE).body(null);
     }
 

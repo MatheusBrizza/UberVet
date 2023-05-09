@@ -46,9 +46,24 @@ public class VeterinarioService {
         return veterinarioRepository.findByNome(nome);
     }
 
+    public Veterinario listarVeterinarioPorEmail(String email) {
+        validarVeterinarioNaoExistentePorEmail(email);
+        return veterinarioRepository.findByEmail(email);
+    }
+
     public void deletarVeterinarioPorId(Integer id) {
         validarVeterinarioNaoExistentePorId(id);
         veterinarioRepository.deleteById(id);
+    }
+
+    public void deletarVeterinarioPorNome(String nome) {
+        validarVeterinarioNaoExistentePorNome(nome);
+        veterinarioRepository.deleteByNome(nome);
+    }
+
+    public void deletarVeterinarioPorEmail(String email) {
+        validarVeterinarioNaoExistentePorEmail(email);
+        veterinarioRepository.deleteByEmail(email);
     }
 
     public Veterinario atualizarVeterinario(Integer id, Veterinario veterinarioNovo) {
@@ -87,6 +102,17 @@ public class VeterinarioService {
             throw new VeterinarioNaoExistenteException(
                     HttpStatus.BAD_REQUEST,
                     String.format("Não existe um veterinário de nome %s, é preciso criar antes de completar esta ação.", nome)
+            );
+        }
+    }
+
+    private void validarVeterinarioNaoExistentePorEmail(String email) throws VeterinarioNaoExistenteException {
+        Veterinario veterinario = veterinarioRepository.findByNome(email);
+
+        if(veterinario == null) {
+            throw new VeterinarioNaoExistenteException(
+                    HttpStatus.BAD_REQUEST,
+                    String.format("Não existe um veterinário com email %s, é preciso criar antes de completar esta ação.", email)
             );
         }
     }
