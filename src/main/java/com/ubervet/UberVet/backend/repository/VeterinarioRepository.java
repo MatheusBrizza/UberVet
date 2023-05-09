@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VeterinarioRepository extends MongoRepository<Veterinario, Integer>{
+
+    Veterinario findByNome(String nome);
 }

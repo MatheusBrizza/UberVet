@@ -20,6 +20,7 @@ public class Veterinario {
     public String registro;
     public String especializacao;
     public String email;
+    public String senha;
     public String telefone;
     public String cartaoCredito;
 }

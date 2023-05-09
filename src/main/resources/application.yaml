@@ -1,6 +1,7 @@
 server:
   servlet:
     context-path: /ubervet
+    port: 8080
 
 spring:
   data:
