@@ -1,9 +1,0 @@
-server:
-  servlet:
-    context-path: /ubervet
-
-spring:
-  data:
-    mongodb:
-      host: ubervet-database-mongo-container
-      uri: mongodb://localhost/ubervet-database-mongo-container
