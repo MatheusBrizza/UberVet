@@ -1,6 +1,6 @@
-package com.ubervet.UberVet.backend.repository;
+package com.ubervet.backend.repository;
 
-import com.ubervet.UberVet.backend.model.Veterinario;
+import com.ubervet.backend.model.Veterinario;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

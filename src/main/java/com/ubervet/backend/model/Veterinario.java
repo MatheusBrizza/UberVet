@@ -1,4 +1,4 @@
-package com.ubervet.UberVet.backend.model;
+package com.ubervet.backend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

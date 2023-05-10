@@ -1,7 +1,7 @@
-package com.ubervet.UberVet.backend.utils;
+package com.ubervet.backend.utils;
 
 
-import com.ubervet.UberVet.backend.model.Veterinario;
+import com.ubervet.backend.model.Veterinario;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class EmailValidation {
