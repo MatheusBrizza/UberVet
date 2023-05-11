@@ -1,12 +1,12 @@
 package com.ubervet.backend.service;
 
+import com.ubervet.backend.dto.VeterinarioRequestDTO;
 import com.ubervet.backend.model.Veterinario;
 import com.ubervet.backend.repository.VeterinarioRepository;
 import com.ubervet.backend.service.exception.ListaVaziaException;
 import com.ubervet.backend.service.exception.VeterinarioExistenteException;
 import com.ubervet.backend.service.exception.VeterinarioNaoExistenteException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +19,17 @@ public class VeterinarioService {
     private VeterinarioRepository veterinarioRepository;
 
     public Veterinario criarVeterinario(Veterinario veterinario) throws VeterinarioExistenteException {
+        Integer.parseInt(veterinario.getId());
         validarVeterinarioExistentePorId(veterinario.getId());
         veterinario = Veterinario.builder()
                 .id(veterinario.getId())
                 .nome(veterinario.getNome())
+                .registro(veterinario.getRegistro())
+                .especializacao(veterinario.getEspecializacao())
+                .endereco(veterinario.getEndereco())
+                .telefone(veterinario.getTelefone())
                 .email(veterinario.getEmail())
+                .senha(veterinario.getSenha())
                 .build();
         return veterinarioRepository.save(veterinario);
     }
@@ -40,11 +46,6 @@ public class VeterinarioService {
         return veterinarioRepository.findById(id);
     }
 
-    public Veterinario listarVeterinarioPorNome(String nome) throws VeterinarioNaoExistenteException {
-        validarVeterinarioNaoExistentePorNome(nome);
-        return veterinarioRepository.findByNome(nome);
-    }
-
     public Veterinario listarVeterinarioPorEmail(String email) throws VeterinarioNaoExistenteException {
         validarVeterinarioNaoExistentePorEmail(email);
         return veterinarioRepository.findByEmail(email);
@@ -53,11 +54,6 @@ public class VeterinarioService {
     public void deletarVeterinarioPorId(Integer id) throws VeterinarioNaoExistenteException {
         validarVeterinarioNaoExistentePorId(id);
         veterinarioRepository.deleteById(id);
-    }
-
-    public void deletarVeterinarioPorNome(String nome) throws VeterinarioNaoExistenteException {
-        validarVeterinarioNaoExistentePorNome(nome);
-        veterinarioRepository.deleteByNome(nome);
     }
 
     public void deletarVeterinarioPorEmail(String email) throws VeterinarioNaoExistenteException {
@@ -72,6 +68,16 @@ public class VeterinarioService {
         return veterinarioRepository.save(veterinarioNovo);
     }
 
+    public Boolean login(VeterinarioRequestDTO veterinarioRequestDTO) {
+        Veterinario veterinario = veterinarioRepository.findByEmail(veterinarioRequestDTO.getEmail());
+        if (veterinario != null) {
+            if (veterinario.getSenha().equals(veterinarioRequestDTO.getSenha())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void validarVeterinarioNaoExistentePorId(Integer id)
             throws VeterinarioNaoExistenteException {
         Optional<Veterinario> veterinarioExists = veterinarioRepository.findById(id);
@@ -84,8 +90,8 @@ public class VeterinarioService {
         }
     }
 
-    private void validarVeterinarioExistentePorId(Integer id) throws VeterinarioExistenteException {
-        Optional<Veterinario> veterinarioExists = veterinarioRepository.findById(id);
+    private void validarVeterinarioExistentePorId(String id) throws VeterinarioExistenteException {
+        Optional<Veterinario> veterinarioExists = Optional.ofNullable(veterinarioRepository.findById(id));
 
         if (veterinarioExists.isPresent()) {
             throw new VeterinarioExistenteException(
@@ -94,22 +100,11 @@ public class VeterinarioService {
         }
     }
 
-    private void validarVeterinarioNaoExistentePorNome(String nome) throws VeterinarioNaoExistenteException {
-        Veterinario veterinario = veterinarioRepository.findByNome(nome);
-
-        if(veterinario == null) {
-            throw new VeterinarioNaoExistenteException(
-                    String.format("Não existe um veterinário de nome %s, é preciso criar antes de " +
-                            "completar esta ação.", nome)
-            );
-        }
-    }
-
     private void validarVeterinarioNaoExistentePorEmail(String email)
             throws VeterinarioNaoExistenteException {
         Veterinario veterinario = veterinarioRepository.findByEmail(email);
 
-        if(veterinario == null) {
+        if (veterinario == null) {
             throw new VeterinarioNaoExistenteException(
                     String.format("Não existe um veterinário com email %s, é preciso criar antes de " +
                             "completar esta ação.", email)
@@ -119,7 +114,7 @@ public class VeterinarioService {
 
     private void validarListaVazia() throws ListaVaziaException {
         List<Veterinario> listaExiste = veterinarioRepository.findAll();
-        if(listaExiste.isEmpty()) {
+        if (listaExiste.isEmpty()) {
             throw new ListaVaziaException(
                     String.format("Lista vazia")
             );

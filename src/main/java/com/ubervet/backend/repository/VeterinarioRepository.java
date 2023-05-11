@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VeterinarioRepository extends MongoRepository<Veterinario, Integer>{
 
-    Veterinario findByNome(String nome);
-
-    void deleteByNome(String nome);
+    Veterinario findById(String id);
 
     Veterinario findByEmail(String email);
 

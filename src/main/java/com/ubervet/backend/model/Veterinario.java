@@ -15,12 +15,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Veterinario {
 
     @Id
-    public Integer id;
+    public String id;
     public String nome;
     public String registro;
     public String especializacao;
+    public String endereco;
+    public String telefone;
     public String email;
     public String senha;
-    public String telefone;
-    public String cartaoCredito;
 }
