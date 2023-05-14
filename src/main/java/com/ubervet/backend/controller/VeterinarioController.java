@@ -35,7 +35,7 @@ public class VeterinarioController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Optional<Veterinario>> listarVeterinarioPorId(@PathVariable("id") Integer id)
+    public ResponseEntity<Optional<Veterinario>> listarVeterinarioPorId(@PathVariable("id") String id)
             throws VeterinarioNaoExistenteException {
         Optional<Veterinario> responseVeterinario = veterinarioService.listarVeterinarioPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
@@ -49,7 +49,7 @@ public class VeterinarioController {
     }
 
     @DeleteMapping("/id/{id}")
-    public ResponseEntity<Void> deletarVeterinarioPorId(@PathVariable("id") Integer id)
+    public ResponseEntity<Void> deletarVeterinarioPorId(@PathVariable("id") String id)
             throws VeterinarioNaoExistenteException {
         veterinarioService.deletarVeterinarioPorId(id);
         return ResponseEntity.status(HttpStatus.GONE).body(null);
@@ -63,7 +63,7 @@ public class VeterinarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Veterinario> atualizarVeterinario(@PathVariable("id") Integer id,
+    public ResponseEntity<Veterinario> atualizarVeterinario(@PathVariable("id") String id,
                                                             @RequestBody Veterinario veterinario)
             throws VeterinarioNaoExistenteException {
         Veterinario responseVeterinario = veterinarioService.atualizarVeterinario(id, veterinario);

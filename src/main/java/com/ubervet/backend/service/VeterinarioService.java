@@ -2,6 +2,7 @@ package com.ubervet.backend.service;
 
 import com.ubervet.backend.dto.VeterinarioRequestDTO;
 import com.ubervet.backend.model.Veterinario;
+import com.ubervet.backend.model.VeterinarioComparator;
 import com.ubervet.backend.repository.VeterinarioRepository;
 import com.ubervet.backend.service.exception.ListaVaziaException;
 import com.ubervet.backend.service.exception.VeterinarioExistenteException;
@@ -9,6 +10,7 @@ import com.ubervet.backend.service.exception.VeterinarioNaoExistenteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +21,9 @@ public class VeterinarioService {
     private VeterinarioRepository veterinarioRepository;
 
     public Veterinario criarVeterinario(Veterinario veterinario) throws VeterinarioExistenteException {
-        Integer.parseInt(veterinario.getId());
         validarVeterinarioExistentePorId(veterinario.getId());
         veterinario = Veterinario.builder()
-                .id(veterinario.getId())
+                .id(criarId())
                 .nome(veterinario.getNome())
                 .registro(veterinario.getRegistro())
                 .especializacao(veterinario.getEspecializacao())
@@ -40,7 +41,7 @@ public class VeterinarioService {
         return veterinarioRepository.findAll();
     }
 
-    public Optional<Veterinario> listarVeterinarioPorId(Integer id)
+    public Optional<Veterinario> listarVeterinarioPorId(String id)
             throws VeterinarioNaoExistenteException {
         validarVeterinarioNaoExistentePorId(id);
         return veterinarioRepository.findById(id);
@@ -51,7 +52,7 @@ public class VeterinarioService {
         return veterinarioRepository.findByEmail(email);
     }
 
-    public void deletarVeterinarioPorId(Integer id) throws VeterinarioNaoExistenteException {
+    public void deletarVeterinarioPorId(String id) throws VeterinarioNaoExistenteException {
         validarVeterinarioNaoExistentePorId(id);
         veterinarioRepository.deleteById(id);
     }
@@ -61,7 +62,7 @@ public class VeterinarioService {
         veterinarioRepository.deleteByEmail(email);
     }
 
-    public Veterinario atualizarVeterinario(Integer id, Veterinario veterinarioNovo)
+    public Veterinario atualizarVeterinario(String id, Veterinario veterinarioNovo)
             throws VeterinarioNaoExistenteException {
         Optional<Veterinario> veterinarioAntigo = listarVeterinarioPorId(id);
         veterinarioNovo.setId(veterinarioAntigo.get().getId());
@@ -78,7 +79,7 @@ public class VeterinarioService {
         return false;
     }
 
-    private void validarVeterinarioNaoExistentePorId(Integer id)
+    private void validarVeterinarioNaoExistentePorId(String id)
             throws VeterinarioNaoExistenteException {
         Optional<Veterinario> veterinarioExists = veterinarioRepository.findById(id);
 
@@ -91,7 +92,7 @@ public class VeterinarioService {
     }
 
     private void validarVeterinarioExistentePorId(String id) throws VeterinarioExistenteException {
-        Optional<Veterinario> veterinarioExists = Optional.ofNullable(veterinarioRepository.findById(id));
+        Optional<Veterinario> veterinarioExists = veterinarioRepository.findById(id);
 
         if (veterinarioExists.isPresent()) {
             throw new VeterinarioExistenteException(
@@ -119,6 +120,16 @@ public class VeterinarioService {
                     String.format("Lista vazia")
             );
         }
+    }
+
+    private String criarId() {
+        List<Veterinario> listaVeterinarios = veterinarioRepository.findAll();
+        if(listaVeterinarios.isEmpty()) {
+            return "1";
+        }
+        Collections.sort(listaVeterinarios, new VeterinarioComparator());
+        Integer lastId = listaVeterinarios.size() +1;
+        return lastId.toString();
     }
 
 }
