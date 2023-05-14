@@ -1,6 +1,6 @@
 package com.ubervet.backend.controller;
 
-import com.ubervet.backend.dto.VeterinarioRequestDTO;
+import com.ubervet.backend.dto.UsuarioRequestDTO;
 import com.ubervet.backend.model.Veterinario;
 import com.ubervet.backend.service.VeterinarioService;
 import com.ubervet.backend.service.exception.ListaVaziaException;
@@ -70,13 +70,14 @@ public class VeterinarioController {
         return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
     }
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody VeterinarioRequestDTO veterinarioRequestDTO) {
+    public ResponseEntity<Boolean> login(@RequestBody UsuarioRequestDTO veterinarioRequestDTO) {
         Boolean responseVeterinario = veterinarioService.login(veterinarioRequestDTO);
         return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<Veterinario> criarVeterinarioFront(@RequestBody Veterinario veterinario) throws VeterinarioExistenteException {
+    public ResponseEntity<Veterinario> criarVeterinarioFront(@RequestBody Veterinario veterinario)
+            throws VeterinarioExistenteException {
         Veterinario responseVeterinario = veterinarioService.criarVeterinario(veterinario);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseVeterinario);
     }

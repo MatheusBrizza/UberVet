@@ -1,6 +1,6 @@
 package com.ubervet.backend.service;
 
-import com.ubervet.backend.dto.VeterinarioRequestDTO;
+import com.ubervet.backend.dto.UsuarioRequestDTO;
 import com.ubervet.backend.model.Veterinario;
 import com.ubervet.backend.model.VeterinarioComparator;
 import com.ubervet.backend.repository.VeterinarioRepository;
@@ -69,10 +69,10 @@ public class VeterinarioService {
         return veterinarioRepository.save(veterinarioNovo);
     }
 
-    public Boolean login(VeterinarioRequestDTO veterinarioRequestDTO) {
-        Veterinario veterinario = veterinarioRepository.findByEmail(veterinarioRequestDTO.getEmail());
+    public Boolean login(UsuarioRequestDTO usuarioRequestDTO) {
+        Veterinario veterinario = veterinarioRepository.findByEmail(usuarioRequestDTO.getEmail());
         if (veterinario != null) {
-            if (veterinario.getSenha().equals(veterinarioRequestDTO.getSenha())) {
+            if (veterinario.getSenha().equals(usuarioRequestDTO.getSenha())) {
                 return true;
             }
         }
