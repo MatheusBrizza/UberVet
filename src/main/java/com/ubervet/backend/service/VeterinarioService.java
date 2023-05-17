@@ -32,6 +32,7 @@ public class VeterinarioService {
                 .email(veterinario.getEmail())
                 .senha(veterinario.getSenha())
                 .build();
+        validarVeterinarioExistentePorEmail(veterinario.getEmail());
         return veterinarioRepository.save(veterinario);
     }
 
@@ -47,8 +48,7 @@ public class VeterinarioService {
         veterinarioRepository.deleteByEmail(email);
     }
 
-    public Veterinario atualizarVeterinario(String id, Veterinario veterinarioNovo)
-            throws VeterinarioNaoExistenteException {
+    public Veterinario atualizarVeterinario(String id, Veterinario veterinarioNovo) {
         Optional<Veterinario> veterinarioAntigo = veterinarioRepository.findById(id);
         veterinarioNovo.setId(veterinarioAntigo.get().getId());
         return veterinarioRepository.save(veterinarioNovo);
@@ -60,6 +60,14 @@ public class VeterinarioService {
         if (veterinarioExists.isPresent()) {
             throw new VeterinarioExistenteException(
                     String.format("Usuario com id %s já existe.", id)
+            );
+        }
+    }
+    private void validarVeterinarioExistentePorEmail(String email) throws VeterinarioExistenteException {
+        Veterinario veterinarioExists = veterinarioRepository.findByEmail(email);
+        if (!(veterinarioExists == null)) {
+            throw new VeterinarioExistenteException(
+                    String.format("Já existe um veterinário com email %s", email)
             );
         }
     }
