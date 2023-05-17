@@ -34,27 +34,6 @@ public class VeterinarioController {
         return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Optional<Veterinario>> listarVeterinarioPorId(@PathVariable("id") String id)
-            throws VeterinarioNaoExistenteException {
-        Optional<Veterinario> responseVeterinario = veterinarioService.listarVeterinarioPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
-    }
-
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Veterinario> listarVeterinarioPorEmail(@PathVariable("email") String email)
-            throws VeterinarioNaoExistenteException {
-        Veterinario responseVeterinario = veterinarioService.listarVeterinarioPorEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
-    }
-
-    @DeleteMapping("/id/{id}")
-    public ResponseEntity<Void> deletarVeterinarioPorId(@PathVariable("id") String id)
-            throws VeterinarioNaoExistenteException {
-        veterinarioService.deletarVeterinarioPorId(id);
-        return ResponseEntity.status(HttpStatus.GONE).body(null);
-    }
-
     @DeleteMapping("/email/{email}")
     public ResponseEntity<Void> deletarVeterinairoPorEmail(@PathVariable("email") String email)
             throws VeterinarioNaoExistenteException {
@@ -69,17 +48,4 @@ public class VeterinarioController {
         Veterinario responseVeterinario = veterinarioService.atualizarVeterinario(id, veterinario);
         return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
     }
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody UsuarioRequestDTO veterinarioRequestDTO) {
-        Boolean responseVeterinario = veterinarioService.login(veterinarioRequestDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(responseVeterinario);
-    }
-
-    @PostMapping("/profile")
-    public ResponseEntity<Veterinario> criarVeterinarioFront(@RequestBody Veterinario veterinario)
-            throws VeterinarioExistenteException {
-        Veterinario responseVeterinario = veterinarioService.criarVeterinario(veterinario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseVeterinario);
-    }
-
 }

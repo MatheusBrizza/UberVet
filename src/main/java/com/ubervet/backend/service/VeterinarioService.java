@@ -41,21 +41,6 @@ public class VeterinarioService {
         return veterinarioRepository.findAll();
     }
 
-    public Optional<Veterinario> listarVeterinarioPorId(String id)
-            throws VeterinarioNaoExistenteException {
-        validarVeterinarioNaoExistentePorId(id);
-        return veterinarioRepository.findById(id);
-    }
-
-    public Veterinario listarVeterinarioPorEmail(String email) throws VeterinarioNaoExistenteException {
-        validarVeterinarioNaoExistentePorEmail(email);
-        return veterinarioRepository.findByEmail(email);
-    }
-
-    public void deletarVeterinarioPorId(String id) throws VeterinarioNaoExistenteException {
-        validarVeterinarioNaoExistentePorId(id);
-        veterinarioRepository.deleteById(id);
-    }
 
     public void deletarVeterinarioPorEmail(String email) throws VeterinarioNaoExistenteException {
         validarVeterinarioNaoExistentePorEmail(email);
@@ -64,31 +49,9 @@ public class VeterinarioService {
 
     public Veterinario atualizarVeterinario(String id, Veterinario veterinarioNovo)
             throws VeterinarioNaoExistenteException {
-        Optional<Veterinario> veterinarioAntigo = listarVeterinarioPorId(id);
+        Optional<Veterinario> veterinarioAntigo = veterinarioRepository.findById(id);
         veterinarioNovo.setId(veterinarioAntigo.get().getId());
         return veterinarioRepository.save(veterinarioNovo);
-    }
-
-    public Boolean login(UsuarioRequestDTO usuarioRequestDTO) {
-        Veterinario veterinario = veterinarioRepository.findByEmail(usuarioRequestDTO.getEmail());
-        if (veterinario != null) {
-            if (veterinario.getSenha().equals(usuarioRequestDTO.getSenha())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void validarVeterinarioNaoExistentePorId(String id)
-            throws VeterinarioNaoExistenteException {
-        Optional<Veterinario> veterinarioExists = veterinarioRepository.findById(id);
-
-        if (veterinarioExists.isEmpty()) {
-            throw new VeterinarioNaoExistenteException(
-                    String.format("Não existe um veterinário com id %s, é preciso criar antes de " +
-                            "completar esta ação.", id)
-            );
-        }
     }
 
     private void validarVeterinarioExistentePorId(String id) throws VeterinarioExistenteException {
