@@ -7,11 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VeterinarioRepository extends MongoRepository<Veterinario, Integer>{
+public interface VeterinarioRepository extends MongoRepository<Veterinario, Integer> {
 
     Optional<Veterinario> findById(String id);
-
-    void deleteById(String id);
 
     Veterinario findByEmail(String email);
 

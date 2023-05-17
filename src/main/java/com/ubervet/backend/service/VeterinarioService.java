@@ -87,11 +87,11 @@ public class VeterinarioService {
 
     private String criarId() {
         List<Veterinario> listaVeterinarios = veterinarioRepository.findAll();
-        if(listaVeterinarios.isEmpty()) {
+        if (listaVeterinarios.isEmpty()) {
             return "1";
         }
         Collections.sort(listaVeterinarios, new VeterinarioComparator());
-        Integer lastId = listaVeterinarios.size() +1;
+        Integer lastId = listaVeterinarios.size() + 1;
         return lastId.toString();
     }
 

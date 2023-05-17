@@ -35,13 +35,14 @@ public class UsuarioService {
                 .build();
         return usuarioRepository.save(usuario);
     }
+
     private String criarId() {
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
-        if(listaUsuarios.isEmpty()) {
+        if (listaUsuarios.isEmpty()) {
             return "1";
         }
         Collections.sort(listaUsuarios, new UsuarioComparator());
-        Integer lastId = listaUsuarios.size() +1;
+        Integer lastId = listaUsuarios.size() + 1;
         return lastId.toString();
     }
 }
